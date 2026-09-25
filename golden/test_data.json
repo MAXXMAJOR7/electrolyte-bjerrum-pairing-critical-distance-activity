@@ -1,0 +1,744 @@
+{
+  "schema": {
+    "input": {
+      "value_a": "float [2.5, 8.0]",
+      "value_b": "float [0.0001, 0.1]",
+      "value_c": "float [0, 100]",
+      "value_d": "int {1, 2}"
+    },
+    "output": {
+      "output": "float, 4 decimals"
+    }
+  },
+  "seed": 49,
+  "cases": [
+    {
+      "id": "edge_control_1",
+      "category": "control",
+      "label": "1:1, large a, 1e-4 M, 25 degC: pairing off (a > q), output ~ DH limiting law",
+      "input": {
+        "value_a": 5.0,
+        "value_b": 0.0001,
+        "value_c": 25.0,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.005
+      }
+    },
+    {
+      "id": "edge_control_2",
+      "category": "control",
+      "label": "1:1, a = 6 A, 0.01 M, 25 degC: a > q, pure extended Debye-Hueckel",
+      "input": {
+        "value_a": 6.0,
+        "value_b": 0.01,
+        "value_c": 25.0,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0427
+      }
+    },
+    {
+      "id": "edge_control_3",
+      "category": "control",
+      "label": "1:1, a = 4.5 A, 0.1 M, 25 degC: a > q, pairing exactly zero (Fuoss-type K_A would give -0.135)",
+      "input": {
+        "value_a": 4.5,
+        "value_b": 0.1,
+        "value_c": 25.0,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.1102
+      }
+    },
+    {
+      "id": "edge_discrim_1",
+      "category": "discriminating",
+      "label": "1:1, a = 2.5 A < q = 3.58 A, 0.1 M, 25 degC: Bjerrum pairs lower log gamma by 0.016 vs no pairing",
+      "input": {
+        "value_a": 2.5,
+        "value_b": 0.1,
+        "value_c": 25.0,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.1446
+      }
+    },
+    {
+      "id": "edge_discrim_2",
+      "category": "discriminating",
+      "label": "1:1, a = 3.8 A, 0.1 M, 0 degC: q = 3.49 A < a, no pairs",
+      "input": {
+        "value_a": 3.8,
+        "value_b": 0.1,
+        "value_c": 0.0,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.1119
+      }
+    },
+    {
+      "id": "edge_discrim_3",
+      "category": "discriminating",
+      "label": "Same salt at 100 degC: q = 4.02 A > a, heating switches pairing ON (eps_r T falls)",
+      "input": {
+        "value_a": 3.8,
+        "value_b": 0.1,
+        "value_c": 100.0,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.1397
+      }
+    },
+    {
+      "id": "edge_discrim_4",
+      "category": "discriminating",
+      "label": "2:2, a = 4 A, 0.01 M, 25 degC: b = 7.2, K_A ~ 265 L/mol, alpha = 0.67",
+      "input": {
+        "value_a": 4.0,
+        "value_b": 0.01,
+        "value_c": 25.0,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.4507
+      }
+    },
+    {
+      "id": "edge_discrim_5",
+      "category": "discriminating",
+      "label": "2:2, a = 4 A, 0.01 M, 100 degC: pairing grows with temperature (K_A 265 -> 509 L/mol, alpha = 0.58)",
+      "input": {
+        "value_a": 4.0,
+        "value_b": 0.01,
+        "value_c": 100.0,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.542
+      }
+    },
+    {
+      "id": "edge_boundary_1",
+      "category": "boundary",
+      "label": "1:1 just above the critical distance (a = 3.60 A > q = 3.579 A): K_A = 0 exactly",
+      "input": {
+        "value_a": 3.6,
+        "value_b": 0.1,
+        "value_c": 25.0,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.1177
+      }
+    },
+    {
+      "id": "edge_boundary_2",
+      "category": "boundary",
+      "label": "1:1 just below the critical distance (a = 3.50 A): pairing switches on with a kink",
+      "input": {
+        "value_a": 3.5,
+        "value_b": 0.1,
+        "value_c": 25.0,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.1198
+      }
+    },
+    {
+      "id": "edge_boundary_3",
+      "category": "boundary",
+      "label": "Most associated corner: 2:2, a = 2.5 A, 0.1 M, 100 degC (b = 12.9, K_A ~ 5700 L/mol, alpha ~ 0.11)",
+      "input": {
+        "value_a": 2.5,
+        "value_b": 0.1,
+        "value_c": 100.0,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -1.4009
+      }
+    },
+    {
+      "id": "edge_boundary_4",
+      "category": "boundary",
+      "label": "Infinite-dilution corner: 1:1, 1e-4 M, 0 degC, a = 8 A: output -> 0",
+      "input": {
+        "value_a": 8.0,
+        "value_b": 0.0001,
+        "value_c": 0.0,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0048
+      }
+    },
+    {
+      "id": "rand_00",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 2.868,
+        "value_b": 0.001737,
+        "value_c": 11.05,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0204
+      }
+    },
+    {
+      "id": "rand_01",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 6.239,
+        "value_b": 0.018839,
+        "value_c": 27.59,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.463
+      }
+    },
+    {
+      "id": "rand_02",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 6.536,
+        "value_b": 0.007786,
+        "value_c": 50.43,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.3503
+      }
+    },
+    {
+      "id": "rand_03",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 5.653,
+        "value_b": 0.001586,
+        "value_c": 24.87,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.019
+      }
+    },
+    {
+      "id": "rand_04",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 3.026,
+        "value_b": 0.015376,
+        "value_c": 32.65,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.6416
+      }
+    },
+    {
+      "id": "rand_05",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 3.976,
+        "value_b": 0.001569,
+        "value_c": 94.61,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0225
+      }
+    },
+    {
+      "id": "rand_06",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 6.137,
+        "value_b": 0.01158,
+        "value_c": 91.01,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.052
+      }
+    },
+    {
+      "id": "rand_07",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 6.073,
+        "value_b": 0.053412,
+        "value_c": 56.32,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.6634
+      }
+    },
+    {
+      "id": "rand_08",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 3.246,
+        "value_b": 0.064947,
+        "value_c": 32.62,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.882
+      }
+    },
+    {
+      "id": "rand_09",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 7.781,
+        "value_b": 0.002945,
+        "value_c": 70.22,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.234
+      }
+    },
+    {
+      "id": "rand_10",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 3.982,
+        "value_b": 0.057112,
+        "value_c": 69.04,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.1014
+      }
+    },
+    {
+      "id": "rand_11",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 5.483,
+        "value_b": 0.000279,
+        "value_c": 19.93,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0082
+      }
+    },
+    {
+      "id": "rand_12",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 7.196,
+        "value_b": 0.067332,
+        "value_c": 30.35,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0829
+      }
+    },
+    {
+      "id": "rand_13",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 6.312,
+        "value_b": 0.001326,
+        "value_c": 66.4,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.176
+      }
+    },
+    {
+      "id": "rand_14",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 7.198,
+        "value_b": 0.033821,
+        "value_c": 47.55,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.539
+      }
+    },
+    {
+      "id": "rand_15",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 4.138,
+        "value_b": 0.002785,
+        "value_c": 26.13,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.2683
+      }
+    },
+    {
+      "id": "rand_16",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 7.816,
+        "value_b": 0.000203,
+        "value_c": 40.72,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.0618
+      }
+    },
+    {
+      "id": "rand_17",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 6.08,
+        "value_b": 0.070714,
+        "value_c": 60.41,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0947
+      }
+    },
+    {
+      "id": "rand_18",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 3.841,
+        "value_b": 0.001042,
+        "value_c": 56.4,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0169
+      }
+    },
+    {
+      "id": "rand_19",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 6.178,
+        "value_b": 0.001306,
+        "value_c": 88.05,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0198
+      }
+    },
+    {
+      "id": "rand_20",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 3.458,
+        "value_b": 0.000614,
+        "value_c": 59.68,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.1664
+      }
+    },
+    {
+      "id": "rand_21",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 2.947,
+        "value_b": 0.021769,
+        "value_c": 36.0,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0706
+      }
+    },
+    {
+      "id": "rand_22",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 5.007,
+        "value_b": 0.000232,
+        "value_c": 56.58,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0081
+      }
+    },
+    {
+      "id": "rand_23",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 6.569,
+        "value_b": 0.001351,
+        "value_c": 2.67,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0168
+      }
+    },
+    {
+      "id": "rand_24",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 4.39,
+        "value_b": 0.004985,
+        "value_c": 97.3,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0385
+      }
+    },
+    {
+      "id": "rand_25",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 2.546,
+        "value_b": 0.000126,
+        "value_c": 7.78,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.0913
+      }
+    },
+    {
+      "id": "rand_26",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 3.927,
+        "value_b": 0.027252,
+        "value_c": 81.12,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0781
+      }
+    },
+    {
+      "id": "rand_27",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 7.738,
+        "value_b": 0.014787,
+        "value_c": 81.67,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.4374
+      }
+    },
+    {
+      "id": "rand_28",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 7.369,
+        "value_b": 0.002069,
+        "value_c": 84.85,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0238
+      }
+    },
+    {
+      "id": "rand_29",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 7.349,
+        "value_b": 0.005981,
+        "value_c": 15.29,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.2823
+      }
+    },
+    {
+      "id": "rand_30",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 3.44,
+        "value_b": 0.064597,
+        "value_c": 22.28,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.102
+      }
+    },
+    {
+      "id": "rand_31",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 7.222,
+        "value_b": 0.006518,
+        "value_c": 31.21,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.3026
+      }
+    },
+    {
+      "id": "rand_32",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 7.593,
+        "value_b": 0.000137,
+        "value_c": 42.81,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.006
+      }
+    },
+    {
+      "id": "rand_33",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 2.993,
+        "value_b": 0.000184,
+        "value_c": 42.9,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0071
+      }
+    },
+    {
+      "id": "rand_34",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 5.304,
+        "value_b": 0.00068,
+        "value_c": 27.73,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.1227
+      }
+    },
+    {
+      "id": "rand_35",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 4.916,
+        "value_b": 0.052216,
+        "value_c": 31.26,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.0862
+      }
+    },
+    {
+      "id": "rand_36",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 4.161,
+        "value_b": 0.0096,
+        "value_c": 82.83,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.4971
+      }
+    },
+    {
+      "id": "rand_37",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 3.756,
+        "value_b": 0.000128,
+        "value_c": 72.67,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.0679
+      }
+    },
+    {
+      "id": "rand_38",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 3.031,
+        "value_b": 0.072303,
+        "value_c": 77.06,
+        "value_d": 1
+      },
+      "expected": {
+        "output": -0.1313
+      }
+    },
+    {
+      "id": "rand_39",
+      "category": "random",
+      "label": "uniform value_a, value_c; log-uniform value_b",
+      "input": {
+        "value_a": 7.51,
+        "value_b": 0.037279,
+        "value_c": 22.87,
+        "value_d": 2
+      },
+      "expected": {
+        "output": -0.5219
+      }
+    }
+  ]
+}
